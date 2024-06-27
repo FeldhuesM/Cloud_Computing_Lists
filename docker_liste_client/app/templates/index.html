@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+</head>
+<body>
+    <h1>{{ list_name }}</h1>
+    <form action="/add" method="post" class="center-container">
+        <input  type="hidden" name="list_name" value="{{ list_name }}">
+        <input class= "items" type="text" name="item" placeholder="Neues Item hinzufügen" required>
+        <button class= "items" type="submit">Hinzufügen</button>
+    </form>
+    <ul class="center">
+        {% for item in current_list %}
+            <li class="list_items">
+                {{ item }}
+                <form action="/delete_item" method="post" style="display: inline;" >
+                    <input  type="hidden" name="list_name" value="{{ list_name }}">
+                    <input  type="hidden" name="item_index" value="{{ loop.index0 }}">
+                    <button type="submit">Löschen</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+    <hr>
+    <h3>Wechseln zu anderer Liste: </h3>
+    <div class="center" >
+        {% for name in lists.keys() %}
+            <div class="list_items">
+                <a href="/?list={{ name }}" class="list_names" >{{ name }}</a>
+                    <form action="/delete_list" method="post" >
+                        <input  type="hidden" name="list_name" value="{{ name }}" >
+                        <button type="submit" >Löschen</button>
+                    </form>
+            </div>
+        {% endfor %}
+    </div>
+    <div class="center" >
+        
+        <form action = "/add_list" method="post" style="display: inline;" >
+            <input type="hidden" name="list_name" value="{{ list_name }}">
+            <input type="text" name="new_list" placeholder="Neue liste hinzufügen" required>
+            <button type="submit">Neue liste erstellen</button>
+        </form>
+    </div>
+</body>
+</html>
